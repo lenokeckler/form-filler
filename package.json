@@ -1,0 +1,14 @@
+{
+  "name": "form-filler",
+  "version": "1.0.0",
+  "description": "Automatización de Google Forms con Cypress + Claude AI",
+  "scripts": {
+    "cy:open": "cypress open",
+    "fill": "cypress run --spec cypress/e2e/fill_form.cy.js --headed",
+    "fill:headless": "cypress run --spec cypress/e2e/fill_form.cy.js"
+  },
+  "devDependencies": {
+    "cypress": "^13.0.0"
+  },
+  "dependencies": {}
+}
