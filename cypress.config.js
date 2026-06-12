@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { defineConfig } = require("cypress");
 
 //  Utilidades 
@@ -398,8 +399,9 @@ module.exports = defineConfig({
     viewportHeight: 800,
     setupNodeEvents(on) {
       on("task", {
-        async generateAnswers({ geminiApiKey }) {
+        async generateAnswers() {
           const demografia = generarDemografia();
+          const geminiApiKey = process.env.GEMINI_API_KEY || null;
 
           let actitudinal;
           if (geminiApiKey) {

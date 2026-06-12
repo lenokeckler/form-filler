@@ -6,7 +6,7 @@ const CONFIG = {
   FORM_URL:
     "https://docs.google.com/forms/d/e/1FAIpQLSdXKErUN5WJvvZgtCY8jwlTHc35D3yYVvLxDtN90RErQ8GmGQ/viewform",
   REPETICIONES: 2,
-  GEMINI_API_KEY: "CLAVE_ELIMINADA_DEL_HISTORIAL",
+  // La GEMINI_API_KEY se lee desde el archivo .env (ver README). No la pongas aquí.
   DELAY_ENTRE_ENVIOS: 3000,
 };
 
@@ -23,9 +23,7 @@ describe("Llenado automático del formulario con IA", () => {
 
   for (let i = 0; i < CONFIG.REPETICIONES; i++) {
     it(`Envío #${i + 1}`, () => {
-      cy.task("generateAnswers", {
-        geminiApiKey: CONFIG.GEMINI_API_KEY || null,
-      }).then((data) => {
+      cy.task("generateAnswers").then((data) => {
         cy.log("Respuestas generadas:", JSON.stringify(data));
 
         

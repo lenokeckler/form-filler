@@ -39,18 +39,19 @@ Abre `cypress/e2e/fill_form.cy.js` y edita el bloque CONFIG al inicio:
 const CONFIG = {
   FORM_URL: "https://docs.google.com/forms/...", // URL de tu formulario
   REPETICIONES: 5,              // cuántas veces llenar el formulario
-  GEMINI_API_KEY: "AIza...",    // tu API Key de Gemini
   DELAY_ENTRE_ENVIOS: 3000,     // ms entre envíos
 };
 ```
+
+La API Key NO se pone aquí: se lee desde el archivo `.env` (ver sección de seguridad abajo).
 
 ### Opción A — Gemini (implementada por defecto)
 
 1. Ve a https://aistudio.google.com/apikey
 2. Crea una API Key (empieza con `AIza...`)
-3. Pégala en `GEMINI_API_KEY` dentro del CONFIG
+3. Cópiala en tu archivo `.env` como `GEMINI_API_KEY=...`
 
-La integración con Gemini está en `cypress.config.js` (función `generarConGemini`), usando el modelo `gemini-2.0-flash`.
+La integración con Gemini está en `cypress.config.js` (función `generarConGemini`), usando el modelo `gemini-2.0-flash`. La clave se carga con `dotenv` desde `.env`.
 
 ### Opción B — Claude (Anthropic, alternativa)
 
@@ -110,20 +111,19 @@ Verifica que la API Key esté correcta y tenga cuota disponible:
 
 No subas tu API Key a un repositorio público. Cualquiera podría usarla y gastar tu cuota.
 
-Recomendado: léela desde una variable de entorno en vez de escribirla en el código.
+La clave se lee desde un archivo `.env` (que está en `.gitignore` y nunca se sube):
 
-```javascript
-// en cypress/e2e/fill_form.cy.js
-GEMINI_API_KEY: Cypress.env("GEMINI_API_KEY"),
-```
+1. Copia la plantilla:
+   ```bash
+   cp .env.example .env
+   ```
+2. Edita `.env` y pega tu clave:
+   ```
+   GEMINI_API_KEY=tu_clave_aqui
+   ```
+3. Listo. `cypress.config.js` la carga automáticamente con `dotenv` y la usa en Node, así la clave nunca llega al navegador.
 
-Y ejecuta pasando la key por consola (sin guardarla en el repo):
-
-```bash
-CYPRESS_GEMINI_API_KEY=tu_key npm run fill
-```
-
-Si alguna vez subiste una key por error, revócala y genera una nueva.
+Si alguna vez subiste una key por error, revócala y genera una nueva en https://aistudio.google.com/apikey
 
 ### Google bloquea el formulario
 - Aumenta `DELAY_ENTRE_ENVIOS` a 5000-10000ms
